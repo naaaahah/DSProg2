@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 32,
+   "execution_count": 88,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -15,7 +15,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 33,
+   "execution_count": 89,
    "metadata": {},
    "outputs": [
     {
@@ -382,13 +382,13 @@
       "<!--\n",
       "Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/\n",
       "\n",
-      "Object Caching 278/455 objects using Disk\n",
+      "Object Caching 281/455 objects using Disk\n",
       "Page Caching using Disk (SSL caching disabled) \n",
       "Content Delivery Network via N/A\n",
       "Disk を使用して圧縮する\n",
-      "Database Caching 6/28 queries in 0.110 seconds using Disk\n",
+      "Database Caching 8/25 queries in 0.081 seconds using Disk\n",
       "\n",
-      "Served from: www.mcsg.co.jp @ 2024-01-15 10:18:53 by W3 Total Cache\n",
+      "Served from: www.mcsg.co.jp @ 2024-01-15 16:18:25 by W3 Total Cache\n",
       "-->\n"
      ]
     }
@@ -401,7 +401,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
+   "execution_count": 90,
    "metadata": {},
    "outputs": [
     {
@@ -434,7 +434,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
+   "execution_count": 91,
    "metadata": {},
    "outputs": [
     {
@@ -467,7 +467,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 36,
+   "execution_count": 92,
    "metadata": {},
    "outputs": [
     {
@@ -491,11 +491,11 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 37,
+   "execution_count": 93,
    "metadata": {},
    "outputs": [],
    "source": [
-    "#データベース作成\n",
+    "#データベース作成:男性\n",
     "conn = sqlite3.connect('opens.db')\n",
     "cursor = conn.cursor()\n",
     "cursor.execute('''\n",
@@ -514,7 +514,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 38,
+   "execution_count": 94,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -532,11 +532,11 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 39,
+   "execution_count": 95,
    "metadata": {},
    "outputs": [],
    "source": [
-    "#データベース作成\n",
+    "#データベース作成:女性\n",
     "conn = sqlite3.connect('opens.db')\n",
     "cursor = conn.cursor()\n",
     "cursor.execute('''\n",
@@ -555,7 +555,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 41,
+   "execution_count": 96,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -567,6 +567,87 @@
     "cursor.execute(\"INSERT INTO fem ('n5', '5n6', '6n7', '7n8', '8n9', '9n') VALUES (?, ?, ?, ?, ?, ?)\", tuple(list_50s_fem))\n",
     "cursor.execute(\"INSERT INTO fem ('n5', '5n6', '6n7', '7n8', '8n9', '9n') VALUES (?, ?, ?, ?, ?, ?)\", tuple(list_60s_fem))\n",
     "cursor.execute(\"INSERT INTO fem ('n5', '5n6', '6n7', '7n8', '8n9', '9n') VALUES (?, ?, ?, ?, ?, ?)\", tuple(list_70s_fem))\n",
+    "conn.commit()\n",
+    "conn.close()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[3, 4, 4, 5, 5, 5, 5, 6, 7, 7, 7, 8, 8, 9, 9, 9, 10, 11, 13, 13, 15]\n"
+     ]
+    }
+   ],
+   "source": [
+    "#クローズドデータを格納\n",
+    "closed_data = [7, 5, 6, 7, 10, 5, 13, 7, 4, 9, 5, 9, 13, 11, 5, 8, 8, 9, 4, 3, 15]\n",
+    "closed_data.sort()\n",
+    "print(closed_data)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[3, 4, 4], [5, 5, 5, 5], [6], [7, 7, 7], [8, 8], [9, 9, 9, 10, 11, 13, 13, 15]]\n",
+      "[3, 4, 1, 3, 2, 8]\n"
+     ]
+    }
+   ],
+   "source": [
+    "#要素数取得\n",
+    "clean1 = [\n",
+    "    closed_data[0:3], closed_data[3:7], closed_data[7:8], closed_data[8:11], closed_data[11:13], closed_data[13:24]\n",
+    "]\n",
+    "print(clean1)\n",
+    "clean2 =[(len(closed_data[0:3])), (len(closed_data[3:7])), (len(closed_data[7:8])), (len(closed_data[8:11])), (len(closed_data[11:13])), (len(closed_data[13:24]))]\n",
+    "print(clean2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#データベース作成:クローズド\n",
+    "conn = sqlite3.connect('opens.db')\n",
+    "cursor = conn.cursor()\n",
+    "cursor.execute('''\n",
+    "    CREATE TABLE IF NOT EXISTS clsd (\n",
+    "        'n5' INTEGER ,\n",
+    "        '5n6' INTEGER,\n",
+    "        '6n7' INTEGER,\n",
+    "        '7n8' INTEGER,\n",
+    "        '8n9' INTEGER,\n",
+    "        '9n' INTEGER\n",
+    "    )\n",
+    "''')\n",
+    "conn.commit()\n",
+    "conn.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 100,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#データベースに格納\n",
+    "conn = sqlite3.connect('opens.db')\n",
+    "cursor = conn.cursor()\n",
+    "cursor.execute(\"INSERT INTO clsd ('n5', '5n6', '6n7', '7n8', '8n9', '9n') VALUES (?, ?, ?, ?, ?, ?)\", tuple(clean2))\n",
     "conn.commit()\n",
     "conn.close()\n"
    ]
